@@ -34,4 +34,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.NEXUS_URL }}/proyecto-devops/fastapi-app:${{ github.run_number }}# Etiqueta con el hash del commit
+          tags: ${{ secrets.NEXUS_URL }}/proyecto-devops/fastapi-app:${{ github.run_number }} # Etiqueta con el hash del commit
