@@ -5,7 +5,7 @@ from .metrics import setup_metrics
 app = FastAPI(
     title="Store API",
     description="API para gestionar clientes, productos y ventas",
-    version="1.0.0"
+    version="1.0.1"
 )
 
 app.include_router(main_router)

@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 5000
 
 # Comando para ejecutar la aplicación cuando el contenedor inicie
-CMD ["python", "run.py"]
+CMD ["uvicorn", "run:app", "--host", "0.0.0.0", "--port", "8000"]
