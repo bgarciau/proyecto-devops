@@ -1,0 +1,52 @@
+name: Install and Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout del código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Conexión, instalación de prerrequisitos y despliegue
+      - name: SSH, Install, and Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+      
+            sudo yum update -y
+            sudo yum install -y git docker
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            # Instalar Docker Compose
+            sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+
+            PROJECT_DIR="proyecto-devops"
+            
+            # Comprueba si el directorio del proyecto ya existe
+            if [ -d "$PROJECT_DIR" ] ; then
+              # Si existe, navega a él y actualiza el código
+              echo "Directorio encontrado. Actualizando el repositorio..."
+              cd $PROJECT_DIR
+              git pull origin main
+            else
+              # Si no existe, clona el repositorio
+              echo "Directorio no encontrado. Clonando el repositorio..."
+              git clone https://github.com/${{ github.repository }}.git $PROJECT_DIR
+              cd $PROJECT_DIR
+            fi
+            
+            # Levanta los servicios con Docker Compose
+            # La bandera --build reconstruye la imagen de la API
+            # Se usa 'sudo' porque el usuario de la acción SSH no está en el grupo 'docker'
+            echo "Levantando los servicios con Docker Compose..."
+            sudo docker-compose up -d --build
