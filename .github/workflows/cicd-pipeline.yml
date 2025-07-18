@@ -30,8 +30,8 @@ jobs:
 
       # 4. Construye y etiqueta la imagen Docker
       - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: ${{ secrets.NEXUS_URL }}/proyecto-devops-fastapi-app:${{ github.sha }} # Etiqueta con el hash del commit
+              uses: docker/build-push-action@v4
+              with:
+                context: .
+                push: true
+                tags: ${{ secrets.NEXUS_URL }}/proyecto-devops/fastapi-store-app:${{ github.sha }}
