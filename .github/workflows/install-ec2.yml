@@ -11,11 +11,9 @@ jobs:
     permissions:
       contents: write
     steps:
-      # 1. Checkout del código
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Conexión, instalación de prerrequisitos y despliegue
       - name: SSH, Install, and Deploy
         uses: appleboy/ssh-action@master
         with:
