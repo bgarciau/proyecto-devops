@@ -9,18 +9,16 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-      # 1. Clona el código del repositorio
+
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. (NUEVO) Configura Docker para confiar en el registro HTTP de Nexus
       - name: Configure Docker to trust insecure registry
         run: |
           sudo mkdir -p /etc/docker
           echo '{"insecure-registries" : ["${{ secrets.NEXUS_URL }}"]}' | sudo tee /etc/docker/daemon.json
           sudo systemctl restart docker
 
-      # 3. Inicia sesión en el repositorio Docker de Nexus
       - name: Login to Nexus Docker Registry
         uses: docker/login-action@v2
         with:
@@ -28,10 +26,9 @@ jobs:
           username: ${{ secrets.NEXUS_USERNAME }}
           password: ${{ secrets.NEXUS_PASSWORD }}
 
-      # 4. Construye y etiqueta la imagen Docker
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: ${{ secrets.NEXUS_URL }}/proyecto-devops/fastapi-app:${{ github.sha }} # Etiqueta con el hash del commit
+          tags: ${{ secrets.NEXUS_URL }}/proyecto-devops/fastapi-app:v1.0.${{ github.run_number }}

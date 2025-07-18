@@ -1,8 +1,7 @@
-# config/prometheus.yml
 global:
-  scrape_interval: 5s # Frecuencia con la que se recolectan métricas
+  scrape_interval: 5s 
 
 scrape_configs:
   - job_name: 'fastapi-app'
     static_configs:
-      - targets: ['fastapi-app:5000'] # El nombre del servicio 'fastapi-app' y su puerto
+      - targets: ['fastapi-app:5000'] 
