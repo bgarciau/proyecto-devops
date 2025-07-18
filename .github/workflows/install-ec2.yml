@@ -52,16 +52,4 @@ jobs:
             # Se usa 'sudo' porque el usuario de la acción SSH no está en el grupo 'docker'
             echo "Levantando los servicios con Docker Compose..."
             sudo docker-compose up -d --build
-
-      - name: Create and push Git Tag
-        run: |
-          # Configura el usuario de Git para la acción
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          
-          # Crea el tag usando el número de ejecución del workflow
-          git tag v1.${{ github.run_number }}
-          
-          # Empuja el nuevo tag al repositorio
-          git push origin --tags
           
