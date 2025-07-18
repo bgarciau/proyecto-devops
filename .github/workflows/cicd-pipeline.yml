@@ -1,30 +1,30 @@
-# name: CI/CD Pipeline for FastAPI App
+name: CI/CD Pipeline for FastAPI App
 
-# on:
-#   push:
-#     branches:
-#       - develop # El pipeline se activa al hacer push a la rama 'develop'
+on:
+  push:
+    branches:
+      - develop # El pipeline se activa al hacer push a la rama 'develop'
 
-# jobs:
-#   build-and-push:
-#     runs-on: ubuntu-latest
-#     steps:
-#       # 1. Clona el código del repositorio
-#       - name: Checkout code
-#         uses: actions/checkout@v3
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Clona el código del repositorio
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-#       # 2. Configura e inicia sesión en el repositorio Docker de Nexus
-#       - name: Login to Nexus Docker Registry
-#         uses: docker/login-action@v2
-#         with:
-#           registry: ${{ secrets.NEXUS_URL }}
-#           username: ${{ secrets.NEXUS_USERNAME }}
-#           password: ${{ secrets.NEXUS_PASSWORD }}
+      # 2. Configura e inicia sesión en el repositorio Docker de Nexus
+      - name: Login to Nexus Docker Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.NEXUS_URL }}
+          username: ${{ secrets.NEXUS_USERNAME }}
+          password: ${{ secrets.NEXUS_PASSWORD }}
 
-#       # 3. Construye y etiqueta la imagen Docker
-#       - name: Build and push Docker image
-#         uses: docker/build-push-action@v4
-#         with:
-#           context: .
-#           push: true
-#           tags: ${{ secrets.NEXUS_URL }}/fastapi-store-app:${{ github.sha }} # Etiqueta con el hash del commit
+      # 3. Construye y etiqueta la imagen Docker
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.NEXUS_URL }}/fastapi-store-app:${{ github.sha }} # Etiqueta con el hash del commit
